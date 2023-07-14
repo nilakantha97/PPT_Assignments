@@ -1,0 +1,220 @@
+Question 1- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int[][] construct2DArray(int[] original, int m, int n) {
+    if(m*n != original.length){
+            return new int[0][0];
+        }
+        
+        int[][] resultMatrix = new int[m][n];
+        
+        int index = 0;
+        for (int i = 0; i < m ; i++){
+            resultMatrix[i] = Arrays.copyOfRange(original, index, index+n);
+            index = index+n;
+        }
+
+        return resultMatrix;
+    }
+}
+
+++++++++++++++++++++
+Question 2- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int arrangeCoins(int n) {
+        long s=1,e=n,mid,ans=0;
+        while(s<=e){
+            mid = s +(e-s)/2;
+            if((mid*(mid+1))/2<=n){
+                ans=mid;
+                s=mid+1;
+            }else{
+                e=mid-1;
+            }
+        }
+        return (int)ans;
+    }
+}
+
+++++++++++++++++++++
+Question 3- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        int n = nums.length;
+        int[] result = new int[n];
+        int left = 0;
+        int right = n - 1;
+        int i = n - 1;
+
+        while (left <= right) {
+            int leftSquare = nums[left] * nums[left];
+            int rightSquare = nums[right] * nums[right];
+
+            if (leftSquare > rightSquare) {
+                result[i] = leftSquare;
+                left++;
+            } else {
+                result[i] = rightSquare;
+                right--;
+            }
+
+            i--;
+        }
+
+        return result;
+    }
+}
+
+++++++++++++++++++++
+Question 4- Solution
+++++++++++++++++++++
+
+class Solution {
+    public List<List<Integer>> findDifference(int[] nums1, int[] nums2) {
+        HashSet<Integer> set1=new HashSet();
+      HashSet<Integer> set2=new HashSet();
+
+     for(int ele: nums1){
+         set1.add(ele);
+     }
+
+     for(int ele:nums2){
+         set2.add(ele);
+     }
+
+
+     List<List<Integer>> list=new ArrayList<>();
+      
+      ArrayList<Integer> l1=new ArrayList<>();
+      
+      ArrayList<Integer> l2=new ArrayList<>();
+
+     for(int ele:set2){
+
+         if(set1.contains(ele)==false){
+           l1.add(ele);
+         }
+     }
+
+
+       for(int ele:set1){
+
+         if(set2.contains(ele)==false){
+           l2.add(ele);
+         }
+     }
+       
+
+       list.add(l2);
+       list.add(l1);
+       return list;
+    }
+}
+
+++++++++++++++++++++
+Question 5- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int findTheDistanceValue(int[] arr1, int[] arr2, int d) {
+        int count=0;
+        int x=0;
+        for(int i=0;i<arr1.length;i++){
+            x=0;
+            for(int j=0;j<arr2.length;j++){
+                int diff=Math.abs(arr1[i]-arr2[j]);
+                if(diff<=d){
+                    j=arr2.length;
+                }
+                else{
+                    x++;
+                }
+            }
+            if(x==arr2.length){
+                count++;
+            }
+        }
+        return count;
+    }
+}
+
+++++++++++++++++++++
+Question 6- Solution
+++++++++++++++++++++
+
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        ArrayList<Integer> list = new ArrayList<>();
+        int arr[] = new int[nums.length+1];
+        for(int i=0;i<nums.length;i++)
+        {
+            arr[nums[i]]++;
+        }   
+        for(int i=0;i<arr.length;i++)
+        {
+            if(arr[i] == 2)
+                list.add(i);
+        } 
+        return list;
+    }
+}
+
+++++++++++++++++++++
+Question 7- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int findMin(int[] nums) {
+        int n = nums.length;
+        if (nums[0] <= nums[n - 1]) {
+            return nums[0];
+        }
+        int left = 0, right = n - 1;
+        while (left < right) {
+            int mid = (left + right) >> 1;
+            if (nums[0] <= nums[mid]) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        return nums[left];
+    }
+}
+
+++++++++++++++++++++
+Question 8- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int[] findOriginalArray(int[] changed) {
+        int n = changed.length;
+        if (n % 2 == 1) {
+            return new int[] {};
+        }
+        Arrays.sort(changed);
+        int[] cnt = new int[changed[n - 1] + 1];
+        for (int x : changed) {
+            ++cnt[x];
+        }
+        int[] ans = new int[n / 2];
+        int i = 0;
+        for (int x : changed) {
+            if (cnt[x] == 0) {
+                continue;
+            }
+            if (x * 2 >= cnt.length || cnt[x * 2] <= 0) {
+                return new int[] {};
+            }
+            ans[i++] = x;
+            cnt[x]--;
+            cnt[x * 2]--;
+        }
+        return i == n / 2 ? ans : new int[] {};
+    }
+}

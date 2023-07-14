@@ -1,0 +1,243 @@
+Question 1- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int[] diStringMatch(String s) {
+        int n = s.length();
+        int[] perm = new int[n + 1];
+
+        int start = 0;
+        int end = n;
+        for (int i = 0; i < n; i++) {
+            if (s.charAt(i) == 'I') {
+                perm[i] = start++;
+            } else {
+                perm[i] = end--;
+            }
+        }
+        perm[n] = start;
+
+        return perm;
+    }
+}
+
+++++++++++++++++++++
+Question 2- Solution
+++++++++++++++++++++
+
+
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        //m = no. of rows
+        //n = no. of columns
+
+        int m= matrix.length;
+        int n= matrix[0].length;
+
+        //base case
+        if(m==0){
+            return false;
+        }
+
+        //binary search
+        int low = 0, high=m*n-1;
+        int midIdx, midElement, rowIdx, colIdx;
+        while(low<=high){
+            midIdx=low+(high-low)/2; // middle index
+            rowIdx=midIdx/n;//mid /no. of columns
+            colIdx=midIdx%n;//mid %no. of columns
+            midElement=matrix[rowIdx][colIdx]; // mid element value
+            //condition 1
+            if(target==midElement){
+                return true;
+            }
+            else{
+                if(target<midElement){
+                    high=midIdx-1;//left side
+                }
+                else{
+                    low=midIdx+1;//right side
+                }
+            }
+
+        } 
+        return false;   
+    }
+}
+
+++++++++++++++++++++
+Question 3- Solution
+++++++++++++++++++++
+
+class Solution {
+    public boolean validMountainArray(int[] arr) {
+        //if size is < 2 then it not mountain
+    if(arr.length<3) return false;
+
+
+    int topidx=0;
+    int top=0;
+
+    //find max value and that index
+    for(int i=0;i<arr.length;i++) 
+        {
+            if(arr[i]>top)
+            {
+            top = arr[i]; 
+            topidx=i;
+            }
+        }
+
+    //check that one side mountain or not .   
+    if(top==arr[arr.length-1] || top==arr[0]) return false;
+            
+            //check perfact mountain or not
+            int i=0;
+            while(i<topidx)
+            {
+                if(arr[i] >= arr[i+1]) return false;
+                i++;
+
+            }
+
+            while(topidx<arr.length-1)
+            {
+                if(arr[topidx] <= arr[topidx+1]) return false;
+                topidx++;
+
+            }
+            return true;
+    }
+}
+
+++++++++++++++++++++
+Question 4- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int findMaxLength(int[] nums) {
+        if (nums == null || nums.length == 0) { // Base Case
+            return 0;
+        }
+        // Converting all 0 to -1
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] == 0) nums[i] = -1;
+        }
+        int sum = 0; // current
+        int max = 0; // final-ans
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1); // put reference in the starting of 0 & -1, as i have tell you in the starting  
+        for(int i = 0; i < nums.length; i++){
+            sum += nums[i]; // cumulative sum
+            if(map.containsKey(sum)){ // if cumulative sum key :- 0, -1, 1 already present
+                int last = map.get(sum); // we get it's value
+                max = Math.max(max, i - last); // and update max
+            }
+            else{ // if it's not present then create it's key-value pair
+                map.put(sum, i);
+            }
+        }
+        return max; // finally return it
+    }
+}
+
+++++++++++++++++++++
+Question 5- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int minProductSum(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        int n = nums1.length, res = 0;
+        for (int i = 0; i < n; ++i) {
+            res += nums1[i] * nums2[n - i - 1];
+        }
+        return res;
+    }
+}
+
+++++++++++++++++++++
+Question 6- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int[] findOriginalArray(int[] changed) {
+        int n = changed.length;
+        if (n % 2 == 1) {
+            return new int[] {};
+        }
+        Arrays.sort(changed);
+        int[] cnt = new int[changed[n - 1] + 1];
+        for (int x : changed) {
+            ++cnt[x];
+        }
+        int[] ans = new int[n / 2];
+        int i = 0;
+        for (int x : changed) {
+            if (cnt[x] == 0) {
+                continue;
+            }
+            if (x * 2 >= cnt.length || cnt[x * 2] <= 0) {
+                return new int[] {};
+            }
+            ans[i++] = x;
+            cnt[x]--;
+            cnt[x * 2]--;
+        }
+        return i == n / 2 ? ans : new int[] {};
+    }
+}
+
+++++++++++++++++++++
+Question 7- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int[][] generateMatrix(int n) {
+      int[][] ans = new int[n][n];
+        int i = 0, j = 0, k = 0;
+        int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        for (int v = 1; v <= n * n; ++v) {
+            ans[i][j] = v;
+            int x = i + dirs[k][0], y = j + dirs[k][1];
+            if (x < 0 || y < 0 || x >= n || y >= n || ans[x][y] > 0) {
+                k = (k + 1) % 4;
+                x = i + dirs[k][0];
+                y = j + dirs[k][1];
+            }
+            i = x;
+            j = y;
+        }
+        return ans;  
+    }
+}
+
+++++++++++++++++++++
+Question 8- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int[][] multiply(int[][] mat1, int[][] mat2) {
+        int r1 = mat1.length, c1 = mat1[0].length, c2 = mat2[0].length;
+        int[][] res = new int[r1][c2];
+        Map<Integer, List<Integer>> mp = new HashMap<>();
+        for (int i = 0; i < r1; ++i) {
+            for (int j = 0; j < c1; ++j) {
+                if (mat1[i][j] != 0) {
+                    mp.computeIfAbsent(i, k -> new ArrayList<>()).add(j);
+                }
+            }
+        }
+        for (int i = 0; i < r1; ++i) {
+            for (int j = 0; j < c2; ++j) {
+                if (mp.containsKey(i)) {
+                    for (int k : mp.get(i)) {
+                        res[i][j] += mat1[i][k] * mat2[k][j];
+                    }
+                }
+            }
+        }
+        return res;
+    }
+}

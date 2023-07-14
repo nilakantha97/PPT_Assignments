@@ -1,0 +1,190 @@
+Question 1- Solution
+++++++++++++++++++++
+
+class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        int[] d1 = new int[256];
+        int[] d2 = new int[256];
+        int n = s.length();
+        for (int i = 0; i < n; ++i) {
+            char a = s.charAt(i), b = t.charAt(i);
+            if (d1[a] != d2[b]) {
+                return false;
+            }
+            d1[a] = i + 1;
+            d2[b] = i + 1;
+        }
+        return true;
+    }
+}
+
+++++++++++++++++++++
+Question 2- Solution
+++++++++++++++++++++
+
+class Solution {
+    public boolean isStrobogrammatic(String num) {
+        int[] d = new int[] {0, 1, -1, -1, -1, -1, 9, -1, 8, 6};
+        for (int i = 0, j = num.length() - 1; i <= j; ++i, --j) {
+            int a = num.charAt(i) - '0', b = num.charAt(j) - '0';
+            if (d[a] != b) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+++++++++++++++++++++
+Question 3- Solution
+++++++++++++++++++++
+
+class Solution {
+    public String addStrings(String num1, String num2) {
+        int num1Len = num1.length()-1;
+       int num2Len = num2.length()-1;
+       int MaxLen = Math.max(num1Len, num2Len)+2;// why 2 cos 
+       char[] res = new char[MaxLen];
+       int sum=0;
+       while(num1Len>=0 || num2Len>=0){
+           if(num1Len>=0){
+               sum+= num1.charAt(num1Len--)-'0';//Character conversion to int
+           }
+           if(num2Len>=0){
+               sum+= num2.charAt(num2Len--)-'0';//Character COnversion to int
+           }
+
+           res[--MaxLen] = (char)((sum%10) + '0');
+           sum = sum/10;
+       }
+
+       // in case like num1 ="1"  and num2="9"--> sum become 10 and sum/10 = 10/10=1
+       //so sum =1 but we want it to be 0 so that it can count again for next number
+
+       //and even if there is not next number 1+9 it should give 10 not 0 cos 10%10=0 and res[]= 0 will be answer so below logic is needed
+       if(sum!=0){
+           res[0] = '1';
+           return String.valueOf(res);
+
+       }
+
+       return String.valueOf(res, 1, res.length-1);
+    }
+}
+
+++++++++++++++++++++
+Question 4- Solution
+++++++++++++++++++++
+
+class Solution {
+    public String reverseWords(String s) {
+      int lastSpaceIndex = -1;
+        char[] chArray = s.toCharArray();
+        int len = s.length();
+        for (int strIndex = 0; strIndex <= len; strIndex++) {
+            if (strIndex == len || chArray[strIndex] == ' ') {
+                int startIndex = lastSpaceIndex + 1;
+                int endIndex = strIndex - 1;
+                while (startIndex < endIndex) {
+                    char temp = chArray[startIndex];
+                    chArray[startIndex] = chArray[endIndex];
+                    chArray[endIndex] = temp;
+                    startIndex++;
+                    endIndex--;
+                }
+                lastSpaceIndex = strIndex;
+            }
+        }
+
+        return new String(chArray);  
+    }
+}
+
+++++++++++++++++++++
+Question 5- Solution
+++++++++++++++++++++
+
+class Solution {
+    public String reverseStr(String s, int k) {
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i += (k << 1)) {
+            for (int st = i, ed = Math.min(chars.length - 1, i + k - 1); st < ed; ++st, --ed) {
+                char t = chars[st];
+                chars[st] = chars[ed];
+                chars[ed] = t;
+            }
+        }
+        return new String(chars);
+    }
+}
+
+++++++++++++++++++++
+Question 6- Solution
+++++++++++++++++++++
+
+class Solution {
+    public boolean rotateString(String s, String goal) {
+        return s.length() == goal.length() && (s + s).contains(goal);
+    }
+}
+
+++++++++++++++++++++
+Question 7- Solution
+++++++++++++++++++++
+
+class Solution {
+    public boolean backspaceCompare(String s, String t) {
+         int i = s.length() - 1, j = t.length() - 1;
+        int skip1 = 0, skip2 = 0;
+        for (; i >= 0 || j >= 0; --i, --j) {
+            while (i >= 0) {
+                if (s.charAt(i) == '#') {
+                    ++skip1;
+                    --i;
+                } else if (skip1 > 0) {
+                    --skip1;
+                    --i;
+                } else {
+                    break;
+                }
+            }
+            while (j >= 0) {
+                if (t.charAt(j) == '#') {
+                    ++skip2;
+                    --j;
+                } else if (skip2 > 0) {
+                    --skip2;
+                    --j;
+                } else {
+                    break;
+                }
+            }
+            if (i >= 0 && j >= 0) {
+                if (s.charAt(i) != t.charAt(j)) {
+                    return false;
+                }
+            } else if (i >= 0 || j >= 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+++++++++++++++++++++
+Question 8- Solution
+++++++++++++++++++++
+
+class Solution {
+    public boolean checkStraightLine(int[][] coordinates) {
+        int x1 = coordinates[0][0], y1 = coordinates[0][1];
+        int x2 = coordinates[1][0], y2 = coordinates[1][1];
+        for (int i = 2; i < coordinates.length; ++i) {
+            int x = coordinates[i][0], y = coordinates[i][1];
+            if ((x - x1) * (y2 - y1) != (y - y1) * (x2 - x1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}

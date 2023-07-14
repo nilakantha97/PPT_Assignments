@@ -1,0 +1,269 @@
+Question 1- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int minimumDeleteSum(String s1, String s2) {
+       int m = s1.length(), n = s2.length();
+        int[][] f = new int[m + 1][n + 1];
+        for (int i = 1; i <= m; ++i) {
+            f[i][0] = f[i - 1][0] + s1.charAt(i - 1);
+        }
+        for (int j = 1; j <= n; ++j) {
+            f[0][j] = f[0][j - 1] + s2.charAt(j - 1);
+        }
+        for (int i = 1; i <= m; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                if (s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                    f[i][j] = f[i - 1][j - 1];
+                } else {
+                    f[i][j]
+                        = Math.min(f[i - 1][j] + s1.charAt(i - 1), f[i][j - 1] + s2.charAt(j - 1));
+                }
+            }
+        }
+        return f[m][n]; 
+    }
+}
+
+++++++++++++++++++++
+Question 2- Solution
+++++++++++++++++++++
+
+class Solution {
+    public boolean checkValidString(String s) {
+        int x = 0;
+        int n = s.length();
+        for (int i = 0; i < n; ++i) {
+            if (s.charAt(i) != ')') {
+                ++x;
+            } else if (x > 0) {
+                --x;
+            } else {
+                return false;
+            }
+        }
+        x = 0;
+        for (int i = n - 1; i >= 0; --i) {
+            if (s.charAt(i) != '(') {
+                ++x;
+            } else if (x > 0) {
+                --x;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+++++++++++++++++++++
+Question 3- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int minDistance(String s1, String s2) {
+        int n = s1.length();
+        int m = s2.length();
+
+        if (n < m) minDistance(s2, s1);
+
+        char[] WA1 = s1.toCharArray();
+        char[] WA2 = s2.toCharArray();
+        
+        int[] dpLast = new int[m + 1];
+        int[] dpCurr = new int[m + 1];
+        
+        for (char c1 : WA1) {
+            for (int j = 0; j < m; j++) {
+                if (c1 == WA2[j]) {
+                    dpCurr[j + 1] = dpLast[j] + 1;
+                } else {
+                    dpCurr[j + 1] = Math.max(dpCurr[j], dpLast[j + 1]);
+                }
+            }
+            int[] tempArr = dpLast;
+            dpLast = dpCurr;
+            dpCurr = tempArr;
+        }
+        
+        return n + m - 2 * dpLast[m];
+    }
+}
+
+++++++++++++++++++++
+Question 4- Solution
+++++++++++++++++++++
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode str2tree(String s) {
+        return dfs(s);
+    }
+
+    private TreeNode dfs(String s) {
+        if ("".equals(s)) {
+            return null;
+        }
+        int p = s.indexOf("(");
+        if (p == -1) {
+            return new TreeNode(Integer.parseInt(s));
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(s.substring(0, p)));
+        int start = p;
+        int cnt = 0;
+        for (int i = p; i < s.length(); ++i) {
+            if (s.charAt(i) == '(') {
+                ++cnt;
+            } else if (s.charAt(i) == ')') {
+                --cnt;
+            }
+            if (cnt == 0) {
+                if (start == p) {
+                    root.left = dfs(s.substring(start + 1, i));
+                    start = i + 1;
+                } else {
+                    root.right = dfs(s.substring(start + 1, i));
+                }
+            }
+        }
+        return root;
+    }
+}
+
+++++++++++++++++++++
+Question 5- Solution
+++++++++++++++++++++
+
+class Solution {
+    public int compress(char[] chars) {
+        int k = 0, n = chars.length;
+        for (int i = 0, j = i + 1; i < n;) {
+            while (j < n && chars[j] == chars[i]) {
+                ++j;
+            }
+            chars[k++] = chars[i];
+            if (j - i > 1) {
+                String cnt = String.valueOf(j - i);
+                for (char c : cnt.toCharArray()) {
+                    chars[k++] = c;
+                }
+            }
+            i = j;
+        }
+        return k;
+    }
+}
+
+++++++++++++++++++++
+Question 6- Solution
+++++++++++++++++++++
+
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+       int m = s.length(), n = p.length();
+        List<Integer> ans = new ArrayList<>();
+        if (m < n) {
+            return ans;
+        }
+        int[] cnt1 = new int[26];
+        for (int i = 0; i < n; ++i) {
+            ++cnt1[p.charAt(i) - 'a'];
+        }
+        int[] cnt2 = new int[26];
+        for (int i = 0; i < n - 1; ++i) {
+            ++cnt2[s.charAt(i) - 'a'];
+        }
+        for (int i = n - 1; i < m; ++i) {
+            ++cnt2[s.charAt(i) - 'a'];
+            if (Arrays.equals(cnt1, cnt2)) {
+                ans.add(i - n + 1);
+            }
+            --cnt2[s.charAt(i - n + 1) - 'a'];
+        }
+        return ans; 
+    }
+}
+
+++++++++++++++++++++
+Question 7- Solution
+++++++++++++++++++++
+
+class Solution {
+    public String decodeString(String s) {
+        Stack<Integer>numStack=new Stack<>();
+        Stack<StringBuilder>strBuild=new Stack<>();
+        StringBuilder str = new StringBuilder();
+        int num=0;
+        for(char c:s.toCharArray()){
+            if(c>='0' && c<='9'){
+                num=num*10 +c -'0';
+            }
+            else if(c=='['){
+                strBuild.push(str);
+                str=new StringBuilder();
+                numStack.push(num);
+                num=0;
+            }else if(c==']'){
+                StringBuilder temp=str;
+                str=strBuild.pop();
+                int count=numStack.pop();
+                while(count-->0){
+                    str.append(temp);
+                }
+            }else{
+                str.append(c);
+            }
+        }
+        return str.toString();
+    }   
+}
+
+
+++++++++++++++++++++
+Question 8- Solution
+++++++++++++++++++++
+
+class Solution {
+    public boolean buddyStrings(String s, String goal) {
+        if(s.length() != goal.length()) return false;
+        
+        if(s.equals(goal)){
+            int[] arr = new int[26];
+            for(int i =0; i < s.length(); i++){
+                char ch = s.charAt(i);
+                arr[ch - 'a'] += 1;
+                if(arr[ch - 'a'] == 2) return true;
+            }
+            return false;
+        }
+        int firstIndex = -1, secondIndex = -1;
+
+        for(int i =0; i < s.length(); i++){
+            if(s.charAt(i) != goal.charAt(i)){
+                if(firstIndex == -1) firstIndex = i;
+                else if (secondIndex == -1) secondIndex = i;
+                else return false;
+            }
+        }
+        if(secondIndex == -1) return false;
+
+        return goal.charAt(secondIndex) == s.charAt(firstIndex) && goal.charAt(firstIndex) == s.charAt(secondIndex);
+
+        
+        
+    }
+}
